@@ -1,4 +1,5 @@
 require 'rforce'
+require 'rforce-wrapper/utilities'
 require 'rforce-wrapper/salesforce_fault_exception'
 require 'rforce-wrapper/methods/core'
 require 'rforce-wrapper/methods/describe'
@@ -16,13 +17,22 @@ module RForce
       # Create a connection to the database with the given email and password/token combo.
       # Optional parameter type can be used to specify live or test accounts (defaults to live).
       def initialize(email, pass, type = :live)
-        @binding = RForce::Binding.new url_for_environment(type)
+        @binding = RForce::Binding.new RForce::Wrapper::Connection.url_for_environment(type)
         @binding.login email, pass
       end
 
-      # def sObject(type ,id = nil)
-      #   sobject = SObject.new(type, id, self)
-      # end
+      # Returns the URL for the given environment type.
+      # Valid types are :test and :live.
+      def self.url_for_environment(type, version = '21.0')
+        case type
+        when :test
+          "https://test.salesforce.com/services/Soap/u/#{version}"
+        when :live
+          "https://www.salesforce.com/services/Soap/u/#{version}"
+        else
+          raise "Invalid environment type: #{type.to_s}"
+        end
+      end
 
       protected
 
@@ -32,7 +42,7 @@ module RForce
           if params
             result = @binding.send method, params
           else
-            result = @binding.send method
+            result = @binding.send method, []
           end
 
           # Errors will result in result[:Fault] being set
@@ -44,30 +54,9 @@ module RForce
           # which will contain the key :result
           result_field_name = method.to_s + "Response"
           if result[result_field_name.to_sym]
-            return ensure_array result[result_field_name.to_sym][:result]
+            return RForce::Wrapper::Utilities.ensure_array result[result_field_name.to_sym][:result]
           else
             return nil
-          end
-        end
-
-        # Returns the URL for the given environment type.
-        # Valid types are :test and :live.
-        def url_for_environment(type)
-          case type
-          when :test
-            'https://test.salesforce.com/services/Soap/u/21.0'
-          when :live
-            'https://www.salesforce.com/services/Soap/u/21.0'
-          end
-        end
-
-        # Ensures that the parameter is wrapped in an array.
-        # Parameter is returned as-is if it is already an array.
-        def ensure_array(thing)
-          if thing.is_a? Array
-            thing
-          else
-            [thing]
           end
         end
     end
