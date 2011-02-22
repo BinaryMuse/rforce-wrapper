@@ -18,6 +18,8 @@ Gem::Specification.new do |s|
     s.add_development_dependency 'mocha'
   else
     s.add_dependency 'rforce'
+    s.add_dependency 'rspec'
+    s.add_dependency 'mocha'
   end
 
   s.files         = `git ls-files`.split("\n")
