@@ -12,19 +12,21 @@ describe RForce::Wrapper::Connection do
     it "should create an RForce binding object" do
       @wrapper.binding.should be_a RForce::Binding
     end
+
+    it "should create an RForce binding to the correct version" do
+      @wrapper = RForce::Wrapper::Connection.new TEST_USER, TEST_PASS_TOKEN, :live, '20.0'
+      correct_url = RForce::Wrapper::Connection.url_for_environment(:live, '20.0')
+      @wrapper.binding.url.should == URI.parse(correct_url)
+    end
+
+    it "should default to version 21.0 of the API" do
+      @wrapper = RForce::Wrapper::Connection.new TEST_USER, TEST_PASS_TOKEN, :live
+      correct_url = RForce::Wrapper::Connection.url_for_environment(:live, '21.0')
+      @wrapper.binding.url.should == URI.parse(correct_url)
+    end
   end
 
   context "#url_for_environment" do
-    it "should return the correct URL for a live environment" do
-      live_url = 'https://www.salesforce.com/services/Soap/u/21.0'
-      RForce::Wrapper::Connection.url_for_environment(:live).should == live_url
-    end
-
-    it "should return the correct url for a test environment" do
-      test_url = 'https://test.salesforce.com/services/Soap/u/21.0'
-      RForce::Wrapper::Connection.url_for_environment(:test).should == test_url
-    end
-
     it "should return the correct URL for a live environment and version number" do
       live_url = 'https://www.salesforce.com/services/Soap/u/20.5'
       RForce::Wrapper::Connection.url_for_environment(:live, '20.5').should == live_url

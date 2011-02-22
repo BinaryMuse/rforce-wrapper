@@ -16,14 +16,14 @@ module RForce
 
       # Create a connection to the database with the given email and password/token combo.
       # Optional parameter type can be used to specify live or test accounts (defaults to live).
-      def initialize(email, pass, type = :live)
-        @binding = RForce::Binding.new RForce::Wrapper::Connection.url_for_environment(type)
+      def initialize(email, pass, type = :live, version = '21.0')
+        @binding = RForce::Binding.new RForce::Wrapper::Connection.url_for_environment(type, version)
         @binding.login email, pass
       end
 
       # Returns the URL for the given environment type.
       # Valid types are :test and :live.
-      def self.url_for_environment(type, version = '21.0')
+      def self.url_for_environment(type, version)
         case type
         when :test
           "https://test.salesforce.com/services/Soap/u/#{version}"
