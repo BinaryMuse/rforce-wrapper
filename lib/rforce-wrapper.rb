@@ -1,0 +1,1 @@
+require 'rforce-wrapper/connection'
