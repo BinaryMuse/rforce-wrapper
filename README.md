@@ -38,7 +38,7 @@ Examples
     accounts = sf.retrieve fields.join(', '), 'Account', '001S000000MBfXAIA1', '001S000000QJAeZIAX'
     
     accounts.each do |account|
-      puts account[:IsPersonAccount] == "true" ? " Person Account" : " Business Account"
+      puts account[:IsPersonAccount] == "true" ? "- Person Account" : "- Business Account"
       puts "         ID: #{account[:Id]}"
       puts "       View: #{account_description[:urlDetail].sub "{ID}", account[:Id]}"
       puts
