@@ -4,13 +4,13 @@ module RForce
 
       def describeDataCategoryGroups(*sObjectTypes)
       end
-    
+
       def describeDataCategoryGroupStructures(*dataCategoryGroupSObjectTypePairs, topCategoriesOnly)
       end
 
       def describeGlobal
       end
-    
+
       def describeLayout(sObjectType, *recordTypeIds)
       end
 
@@ -22,10 +22,10 @@ module RForce
         params = sObjectTypes.flatten.map { |type| [:sObjectType, type] }.flatten
         make_api_call :describeSObjects, params
       end
-    
+
       def describeSoftphoneLayout
       end
-    
+
       def describeTabs
       end
 
