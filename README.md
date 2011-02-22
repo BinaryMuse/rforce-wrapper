@@ -21,7 +21,7 @@ Examples
     require 'rforce-wrapper'
     
     # Connect to our sandbox.
-    sf  = RForce::Wrapper::Connection.new('email', 'password' + 'token', :test)
+    sf = RForce::Wrapper::Connection.new('email', 'password' + 'token', :test)
     
     # Describe the sObject "Account" and get a list of fields.
     account_description = sf.describeSObjects('Account').first
@@ -32,6 +32,9 @@ Examples
     end
     
     # Fetch some accounts.
+    # Note that although the official API takes an array of IDs as the last
+    # parameter (see http://www.salesforce.com/us/developer/docs/api/Content/sforce_api_calls_retrieve.htm),
+    # we're simply passing in additional parameters. An array would also have worked fine.
     accounts = sf.retrieve fields.join(', '), 'Account', '001S000000MBfXAIA1', '001S000000QJAeZIAX'
     
     accounts.each do |account|
