@@ -45,7 +45,7 @@ Examples
     
       if account[:IsPersonAccount] == "true"
         puts " First Name: #{account[:FirstName]}"
-        puts " First Name: #{account[:LastName]}"
+        puts "  Last Name: #{account[:LastName]}"
         puts "      Phone: #{account[:PersonHomePhone]}"
         puts "      Email: #{account[:PersonEmail]}"
       else
@@ -63,7 +63,7 @@ Output:
            View: https://cs1.salesforce.com/001S000000MBfXAIA1
     
      First Name: Sample
-     First Name: Person
+      Last Name: Person
           Phone: (555) 555-1234
           Email: sample.person@company.com
     
