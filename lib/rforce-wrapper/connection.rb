@@ -16,8 +16,8 @@ module RForce
       attr_reader :binding
 
       # Creates a new connect to the Salesforce API using the given email and
-      # password or password+token combination. Additional options can be
-      # specified.
+      # password or password+token combination and connects to the API.
+      # Additional options can be specified.
       #
       # @param [String] email the email address of the account to log in with
       # @param [String] pass the password or password+token combo for the account
