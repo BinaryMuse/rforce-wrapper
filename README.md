@@ -10,19 +10,26 @@ and methods that wrap RForce, providing a more concrete API against
 Salesforce's own SOAP API, and provides error checking and basic result
 parsing.
 
+Documentation
+-------------
+
+Detailed API documentation can be found at
+[http://rubydoc.info/github/BinaryMuse/rforce-wrapper/frames](http://rubydoc.info/github/BinaryMuse/rforce-wrapper/frames).
+
+Notes
+-----
+
 RForce-wrapper tries to match the Salesforce Web Services API as closely
-as possible, matching method names and arguments. Anywhere the Salesforce API
-allows an array for an argument, RForce-wrapper allows either an array or
-multiple arguments.
-
-Examples
---------
-
-### Notes
+as possible, matching method names and arguments. Most places where the 
+Salesforce API allows an array for an argument, RForce-wrapper allows either
+an array or multiple arguments (via a splat).
 
 All calls via RForce-wrapper have their results wrapped in an array. You can
 disable this functionality by specifying the option `:wrap_results => false`
 in the constructor to your `RForce::Wrapper::Connection`.
+
+Examples
+--------
 
 ### Overview
 
