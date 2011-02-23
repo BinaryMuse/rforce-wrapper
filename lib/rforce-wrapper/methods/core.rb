@@ -6,6 +6,8 @@ module RForce
       end
 
       def create(*sObjects)
+        params = sObjects.flatten.map { |sobj| [:sObject, sobj] }.flatten
+        make_api_call :create, params
       end
 
       def delete(*ids)

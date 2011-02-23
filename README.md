@@ -73,3 +73,12 @@ Output:
     
            Name: Sample Company
           Phone: (555) 555-4321
+
+### Creating a Record
+
+    new_account = {
+      :type      => 'Account',
+      :firstName => 'John',
+      :lastName  => 'Smith'
+    }
+    puts sf.create(new_account).first

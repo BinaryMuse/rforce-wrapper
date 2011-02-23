@@ -58,6 +58,29 @@ describe RForce::Wrapper::Connection do
   end
 
   context "core api method" do
+    context "#create" do
+      it "should call the create API method correctly with one sObject" do
+        sObject = { :type => 'Account', :firstName => 'Brandon', :lastName => 'Tilley' }
+        @wrapper.expects(:make_api_call).with(:create, [:sObject, sObject])
+        @wrapper.create sObject
+      end
+
+      it "should call the create API method correctly with multiple sObjects passed separately" do
+        sObject = { :type => 'Account', :firstName => 'Brandon', :lastName => 'Tilley' }
+        sObject2 = { :type => 'Account', :firstName => 'John', :lastName => 'Doe' }
+        @wrapper.expects(:make_api_call).with(:create, [:sObject, sObject, :sObject, sObject2])
+        @wrapper.create sObject, sObject2
+      end
+
+      it "should call the create API method correctly with multiple sObjects passed as an array" do
+        sObject = { :type => 'Account', :firstName => 'Brandon', :lastName => 'Tilley' }
+        sObject2 = { :type => 'Account', :firstName => 'John', :lastName => 'Doe' }
+        params = [sObject, sObject2]
+        @wrapper.expects(:make_api_call).with(:create, [:sObject, sObject, :sObject, sObject2])
+        @wrapper.create params
+      end
+    end
+
     context "#logout" do
       it "should call the logout API method" do
         @wrapper.expects(:make_api_call).with(:logout)
