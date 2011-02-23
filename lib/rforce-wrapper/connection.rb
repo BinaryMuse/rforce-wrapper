@@ -51,42 +51,40 @@ module RForce
         end
       end
 
-      protected
-
-        # Performs a SOAP API call via the underlying `RForce::Binding`
-        # object. Raises an exception if a `Fault` is detected. Returns
-        # the data portion of the result (wrapped in an `Array` if
-        # `wrap_results` is true; see {#initialize}).
-        #
-        # @param [Symbol] method the API method to call
-        # @param [Array, Hash, nil] params the parameters to pass to the API
-        #   method. `RForce::Binding` expects either an `Array` or `Hash` to
-        #   turn into SOAP arguments. Pass `nil`, `[]` or `{}` if the API
-        #   call takes no parameters.
-        # @raise [RForce::Wrapper::SalesforceFaultException] indicates that
-        #   a `Fault` was returned from the Salesforce API
-        def make_api_call(method, params = nil)
-          if params
-            result = @binding.send method, params
-          else
-            result = @binding.send method, []
-          end
-
-          # Errors will result in result[:Fault] being set
-          if result[:Fault]
-            raise RForce::Wrapper::SalesforceFaultException.new result[:Fault][:faultcode], result[:Fault][:faultstring]
-          end
-
-          # If the result was successful, there will be a key: "#{method.to_s}Response".to_sym
-          # which will contain the key :result
-          result_field_name = method.to_s + "Response"
-          if result[result_field_name.to_sym]
-            data = result[result_field_name.to_sym][:result]
-            return @wrap_results ? RForce::Wrapper::Utilities.ensure_array(data) : data
-          else
-            return nil
-          end
+      # Performs a SOAP API call via the underlying `RForce::Binding`
+      # object. Raises an exception if a `Fault` is detected. Returns
+      # the data portion of the result (wrapped in an `Array` if
+      # `wrap_results` is true; see {#initialize}).
+      #
+      # @param [Symbol] method the API method to call
+      # @param [Array, Hash, nil] params the parameters to pass to the API
+      #   method. `RForce::Binding` expects either an `Array` or `Hash` to
+      #   turn into SOAP arguments. Pass `nil`, `[]` or `{}` if the API
+      #   call takes no parameters.
+      # @raise [RForce::Wrapper::SalesforceFaultException] indicates that
+      #   a `Fault` was returned from the Salesforce API
+      def make_api_call(method, params = nil)
+        if params
+          result = @binding.send method, params
+        else
+          result = @binding.send method, []
         end
+
+        # Errors will result in result[:Fault] being set
+        if result[:Fault]
+          raise RForce::Wrapper::SalesforceFaultException.new result[:Fault][:faultcode], result[:Fault][:faultstring]
+        end
+
+        # If the result was successful, there will be a key: "#{method.to_s}Response".to_sym
+        # which will contain the key :result
+        result_field_name = method.to_s + "Response"
+        if result[result_field_name.to_sym]
+          data = result[result_field_name.to_sym][:result]
+          return @wrap_results ? RForce::Wrapper::Utilities.ensure_array(data) : data
+        else
+          return nil
+        end
+      end
     end
   end
 end
