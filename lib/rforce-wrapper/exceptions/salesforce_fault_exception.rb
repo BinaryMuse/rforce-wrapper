@@ -1,6 +1,5 @@
 module RForce
   module Wrapper
-
     class SalesforceFaultException < Exception
       def initialize(code, string)
         @code   = code
@@ -11,6 +10,5 @@ module RForce
         "#{@code}: #{@string}"
       end
     end
-
   end
 end

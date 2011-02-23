@@ -1,6 +1,6 @@
 require 'rforce'
 require 'rforce-wrapper/utilities'
-require 'rforce-wrapper/salesforce_fault_exception'
+require 'rforce-wrapper/exceptions/salesforce_fault_exception'
 require 'rforce-wrapper/methods/core'
 require 'rforce-wrapper/methods/describe'
 require 'rforce-wrapper/methods/utility'
