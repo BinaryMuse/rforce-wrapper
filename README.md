@@ -1,7 +1,9 @@
 rforce-wrapper
 ==============
 
-RForce-wrapper creates a wrapper around RForce to make it easier to use.
+RForce-wrapper creates a concrete wrapper around RForce to make it more clear
+and easier to use. It currently supports **version 21.0** of the Salesforce
+Web Services API.
 
 [RForce](https://github.com/undees/rforce) is a great binding to the
 Salesforce Web Services API. RForce transparently turns method calls into
