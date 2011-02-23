@@ -82,3 +82,9 @@ Output:
       :lastName  => 'Smith'
     }
     puts sf.create(new_account).first
+
+License
+-------
+
+RForce-wrapper is released under the MIT License. See the LICENSE file for
+more details.
