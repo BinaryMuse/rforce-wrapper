@@ -12,17 +12,34 @@ module RForce
       include RForce::Wrapper::DescribeMethods
       include RForce::Wrapper::UtilityMethods
 
+      # Returns the underlying `RForce::Binding` object.
       attr_reader :binding
 
-      # Create a connection to the database with the given email and password/token combo.
-      # Optional parameter type can be used to specify live or test accounts (defaults to live).
-      def initialize(email, pass, type = :live, version = '21.0')
-        @binding = RForce::Binding.new RForce::Wrapper::Connection.url_for_environment(type, version)
+      # Creates a new connect to the Salesforce API using the given email and
+      # password or password+token combination. Additional options can be
+      # specified.
+      #
+      # @param [String] email the email address of the account to log in with
+      # @param [String] pass the password or password+token combo for the account
+      # @param [Hash] options additional options for the connection
+      # @option options [:live, :test] :environment the environment, defaults to `:live`
+      # @option options [String] :version the version of the Salesforce API to use, defaults to `'21.0'`
+      # @option options [Boolean] :wrap_results whether or not to wrap single-element results into an array, defaults to `true`
+      def initialize(email, pass, options = {})
+        options = {
+          :environment  => :live,
+          :version      => '21.0',
+          :wrap_results => true
+        }.merge(options)
+        @wrap_results = options[:wrap_results]
+        @binding = RForce::Binding.new RForce::Wrapper::Connection.url_for_environment(options[:environment], options[:version])
         @binding.login email, pass
       end
 
-      # Returns the URL for the given environment type.
-      # Valid types are :test and :live.
+      # Returns the URL for the given environment type and version.
+      #
+      # @param [:live, :test] type the environment type
+      # @param [String] version the version of the Salesforce API to use
       def self.url_for_environment(type, version)
         case type
         when :test
@@ -36,8 +53,18 @@ module RForce
 
       protected
 
-        # Make the SOAP API call identified by method
-        # using the given params.
+        # Performs a SOAP API call via the underlying `RForce::Binding`
+        # object. Raises an exception if a `Fault` is detected. Returns
+        # the data portion of the result (wrapped in an `Array` if
+        # `wrap_results` is true; see {#initialize}).
+        #
+        # @param [Symbol] method the API method to call
+        # @param [Array, Hash, nil] params the parameters to pass to the API
+        #   method. `RForce::Binding` expects either an `Array` or `Hash` to
+        #   turn into SOAP arguments. Pass `nil`, `[]` or `{}` if the API
+        #   call takes no parameters.
+        # @raise [RForce::Wrapper::SalesforceFaultException] indicates that
+        #   a `Fault` was returned from the Salesforce API
         def make_api_call(method, params = nil)
           if params
             result = @binding.send method, params
@@ -54,7 +81,8 @@ module RForce
           # which will contain the key :result
           result_field_name = method.to_s + "Response"
           if result[result_field_name.to_sym]
-            return RForce::Wrapper::Utilities.ensure_array result[result_field_name.to_sym][:result]
+            data = result[result_field_name.to_sym][:result]
+            return @wrap_results ? RForce::Wrapper::Utilities.ensure_array(data) : data
           else
             return nil
           end

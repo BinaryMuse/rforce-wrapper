@@ -18,10 +18,18 @@ multiple arguments.
 Examples
 --------
 
+### Notes
+
+All calls via RForce-wrapper have their results wrapped in an array. You can
+disable this functionality by specifying the option `:wrap_results => false`
+in the constructor to your `RForce::Wrapper::Connection`.
+
+### Overview
+
     require 'rforce-wrapper'
     
     # Connect to our sandbox.
-    sf = RForce::Wrapper::Connection.new('email', 'password' + 'token', :test)
+    sf = RForce::Wrapper::Connection.new('email', 'password' + 'token', {:environment => :test})
     
     # Describe the sObject "Account" and get a list of fields.
     account_description = sf.describeSObjects('Account').first
