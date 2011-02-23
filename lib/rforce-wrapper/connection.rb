@@ -4,6 +4,7 @@ require 'rforce-wrapper/exceptions/salesforce_fault_exception'
 require 'rforce-wrapper/methods/core'
 require 'rforce-wrapper/methods/describe'
 require 'rforce-wrapper/methods/utility'
+require 'rforce-wrapper/types'
 
 module RForce
   module Wrapper
