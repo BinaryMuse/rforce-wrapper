@@ -8,9 +8,9 @@ require 'rforce-wrapper/methods/utility'
 module RForce
   module Wrapper
     class Connection
-      include RForce::Wrapper::CoreMethods
-      include RForce::Wrapper::DescribeMethods
-      include RForce::Wrapper::UtilityMethods
+      include RForce::Wrapper::ApiMethods::CoreMethods
+      include RForce::Wrapper::ApiMethods::DescribeMethods
+      include RForce::Wrapper::ApiMethods::UtilityMethods
 
       # Returns the underlying `RForce::Binding` object.
       attr_reader :binding

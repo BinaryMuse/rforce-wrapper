@@ -85,27 +85,82 @@ describe RForce::Wrapper::Connection do
     end
   end
 
-  context "core api method" do
+  context "core API method" do
+    context "#convertLead" do
+
+    end
+
     context "#create" do
       it "should call the create API method correctly with one sObject" do
         sObject = { :type => 'Account', :firstName => 'Brandon', :lastName => 'Tilley' }
-        @wrapper.expects(:make_api_call).with(:create, [:sObject, sObject])
+        @wrapper.expects(:make_api_call).with(:create, [:sObjects, sObject])
         @wrapper.create sObject
       end
 
       it "should call the create API method correctly with multiple sObjects passed separately" do
-        sObject = { :type => 'Account', :firstName => 'Brandon', :lastName => 'Tilley' }
+        sObject  = { :type => 'Account', :firstName => 'Brandon', :lastName => 'Tilley' }
         sObject2 = { :type => 'Account', :firstName => 'John', :lastName => 'Doe' }
-        @wrapper.expects(:make_api_call).with(:create, [:sObject, sObject, :sObject, sObject2])
+        @wrapper.expects(:make_api_call).with(:create, [:sObjects, sObject, :sObjects, sObject2])
         @wrapper.create sObject, sObject2
       end
 
       it "should call the create API method correctly with multiple sObjects passed as an array" do
-        sObject = { :type => 'Account', :firstName => 'Brandon', :lastName => 'Tilley' }
+        sObject  = { :type => 'Account', :firstName => 'Brandon', :lastName => 'Tilley' }
         sObject2 = { :type => 'Account', :firstName => 'John', :lastName => 'Doe' }
-        params = [sObject, sObject2]
-        @wrapper.expects(:make_api_call).with(:create, [:sObject, sObject, :sObject, sObject2])
+        params   = [sObject, sObject2]
+        @wrapper.expects(:make_api_call).with(:create, [:sObjects, sObject, :sObjects, sObject2])
         @wrapper.create params
+      end
+    end
+
+    context "#delete" do
+      it "should call the delete API method correctly with one ID" do
+        @wrapper.expects(:make_api_call).with(:delete, [:ids, 'id'])
+        @wrapper.delete 'id'
+      end
+
+      it "should call the delete API method correctly with multiple IDs passed separately" do
+        @wrapper.expects(:make_api_call).with(:delete, [:ids, 'id', :ids, 'id2'])
+        @wrapper.delete 'id', 'id2'
+      end
+
+      it "should call the delete API method correctly with multiple IDs passed as an array" do
+        @wrapper.expects(:make_api_call).with(:delete, [:ids, 'id', :ids, 'id2'])
+        @wrapper.delete ['id', 'id2']
+      end
+    end
+
+    context "#emptyRecycleBin" do
+      it "should call the emptyRecycleBin API method correctly with one ID" do
+        @wrapper.expects(:make_api_call).with(:emptyRecycleBin, [:ids, 'id'])
+        @wrapper.emptyRecycleBin 'id'
+      end
+
+      it "should call the delete API method correctly with multiple IDs passed separately" do
+        @wrapper.expects(:make_api_call).with(:emptyRecycleBin, [:ids, 'id', :ids, 'id2'])
+        @wrapper.emptyRecycleBin 'id', 'id2'
+      end
+
+      it "should call the delete API method correctly with multiple IDs passed as an array" do
+        @wrapper.expects(:make_api_call).with(:emptyRecycleBin, [:ids, 'id', :ids, 'id2'])
+        @wrapper.emptyRecycleBin ['id', 'id2']
+      end
+    end
+
+    context "#invalidateSessions" do
+      it "should call the invalidateSessions API method correctly with one ID" do
+        @wrapper.expects(:make_api_call).with(:invalidateSessions, [:sessionIds, 'id'])
+        @wrapper.invalidateSessions 'id'
+      end
+
+      it "should call the delete API method correctly with multiple IDs passed separately" do
+        @wrapper.expects(:make_api_call).with(:invalidateSessions, [:sessionIds, 'id', :sessionIds, 'id2'])
+        @wrapper.invalidateSessions 'id', 'id2'
+      end
+
+      it "should call the delete API method correctly with multiple IDs passed as an array" do
+        @wrapper.expects(:make_api_call).with(:invalidateSessions, [:sessionIds, 'id', :sessionIds, 'id2'])
+        @wrapper.invalidateSessions ['id', 'id2']
       end
     end
 
@@ -118,29 +173,29 @@ describe RForce::Wrapper::Connection do
 
     context "#retrieve" do
       it "should call the retrieve API method correctly with one ID" do
-        fieldList = 'Name, Phone'
+        fieldList   = 'Name, Phone'
         sObjectType = 'Account'
-        id = 'abcdefg'
-        @wrapper.expects(:make_api_call).with(:retrieve, [:fieldList, fieldList, :sObjectType, sObjectType, :Id, id])
+        id          = 'abcdefg'
+        @wrapper.expects(:make_api_call).with(:retrieve, [:fieldList, fieldList, :sObjectType, sObjectType, :ids, id])
         @wrapper.retrieve fieldList, sObjectType, id
       end
 
       it "should call the retrieve API method correctly with multiple IDs passed separately" do
-        fieldList = 'Name, Phone'
+        fieldList   = 'Name, Phone'
         sObjectType = 'Account'
-        id  = 'abcdefg'
-        id2 = 'tuvwxyz'
-        @wrapper.expects(:make_api_call).with(:retrieve, [:fieldList, fieldList, :sObjectType, sObjectType, :Id, id, :Id, id2])
+        id          = 'abcdefg'
+        id2         = 'tuvwxyz'
+        @wrapper.expects(:make_api_call).with(:retrieve, [:fieldList, fieldList, :sObjectType, sObjectType, :ids, id, :ids, id2])
         @wrapper.retrieve fieldList, sObjectType, id, id2
       end
-    
+
       it "should call the retrieve API method correctly with multiple IDs passed as an array" do
-        fieldList = 'Name, Phone'
+        fieldList   = 'Name, Phone'
         sObjectType = 'Account'
-        id  = 'abcdefg'
-        id2 = 'tuvwxyz'
-        ids = [id, id2]
-        @wrapper.expects(:make_api_call).with(:retrieve, [:fieldList, fieldList, :sObjectType, sObjectType, :Id, id, :Id, id2])
+        id          = 'abcdefg'
+        id2         = 'tuvwxyz'
+        ids         = [id, id2]
+        @wrapper.expects(:make_api_call).with(:retrieve, [:fieldList, fieldList, :sObjectType, sObjectType, :ids, id, :ids, id2])
         @wrapper.retrieve fieldList, sObjectType, ids
       end
     end
