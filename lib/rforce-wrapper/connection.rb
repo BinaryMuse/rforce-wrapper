@@ -43,7 +43,7 @@ module RForce
             "Services API is not supported by RForce-wrapper."
           Kernel.warn(message)
         end
-        @binding = RForce::Binding.new RForce::Wrapper::Connection.url_for_environment(options[:environment], options[:version])
+        @binding = RForce::Binding.new self.class.url_for_environment(options[:environment], options[:version])
         @binding.login email, pass
       end
 
@@ -75,11 +75,7 @@ module RForce
       # @raise [RForce::Wrapper::SalesforceFaultException] indicates that
       #   a `Fault` was returned from the Salesforce API
       def make_api_call(method, params = nil)
-        if params
-          result = @binding.send method, params
-        else
-          result = @binding.send method, []
-        end
+        result = @binding.send method, params || []
 
         # Errors will result in result[:Fault] being set
         if result[:Fault]
@@ -91,9 +87,9 @@ module RForce
         result_field_name = method.to_s + "Response"
         if result[result_field_name.to_sym]
           data = result[result_field_name.to_sym][:result]
-          return @wrap_results ? RForce::Wrapper::Utilities.ensure_array(data) : data
+          @wrap_results ? RForce::Wrapper::Utilities.ensure_array(data) : data
         else
-          return nil
+          nil
         end
       end
     end
