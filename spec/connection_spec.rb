@@ -3,6 +3,8 @@ require 'uri'
 
 describe RForce::Wrapper::Connection do
   before :each do
+    Kernel.stubs(:warn).returns(true)
+
     @default_constructor_args = [TEST_USER, TEST_PASS_TOKEN]
     RForce::Binding.any_instance.stubs(:login).returns(:login)
     RForce::Binding.any_instance.stubs(:call_remote).returns(api_response_for(API_METHOD))
@@ -30,6 +32,11 @@ describe RForce::Wrapper::Connection do
       @wrapper = RForce::Wrapper::Connection.new *@default_constructor_args, {:environment => :live}
       correct_url = RForce::Wrapper::Connection.url_for_environment(:live, '21.0')
       @wrapper.binding.url.should == URI.parse(correct_url)
+    end
+
+    it "should warn about unsupported versions of the API" do
+      Kernel.expects(:warn).once
+      @wrapper = RForce::Wrapper::Connection.new *@default_constructor_args, {:version => '10.7'}
     end
 
     it "should set wrap_results to false if passed" do

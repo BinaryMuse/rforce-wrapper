@@ -1,5 +1,6 @@
 require 'rforce'
 require 'rforce-wrapper/utilities'
+require 'rforce-wrapper/version'
 require 'rforce-wrapper/exceptions/salesforce_fault_exception'
 require 'rforce-wrapper/methods/core'
 require 'rforce-wrapper/methods/describe'
@@ -33,6 +34,11 @@ module RForce
           :wrap_results => true
         }.merge(options)
         @wrap_results = options[:wrap_results]
+        unless RForce::Wrapper::SF_API_VERSIONS.include? options[:version]
+          message = "Version #{options[:version]} of the Salesforce Web " +
+            "Services API is not supported by RForce-wrapper."
+          Kernel.warn(message)
+        end
         @binding = RForce::Binding.new RForce::Wrapper::Connection.url_for_environment(options[:environment], options[:version])
         @binding.login email, pass
       end
