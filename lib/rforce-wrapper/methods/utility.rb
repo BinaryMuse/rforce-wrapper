@@ -2,7 +2,6 @@ module RForce
   module Wrapper
     module ApiMethods
       module UtilityMethods
-
         def getServerTimestamp
         end
 
@@ -17,7 +16,6 @@ module RForce
 
         def setPassword(userId, password)
         end
-
       end
     end
   end

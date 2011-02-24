@@ -5,7 +5,6 @@ module RForce
     module Types
       # Represents an sObject in the Salesforce database.
       class SObject
-
         # @return [String] the type of the sObject (e.g. `Account` or `Lead`)
         attr_accessor :type
 

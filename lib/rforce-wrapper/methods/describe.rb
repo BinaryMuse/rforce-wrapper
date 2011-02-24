@@ -2,7 +2,6 @@ module RForce
   module Wrapper
     module ApiMethods
       module DescribeMethods
-
         def describeDataCategoryGroups(*sObjectTypes)
         end
 
@@ -29,7 +28,6 @@ module RForce
 
         def describeTabs
         end
-
       end
     end
   end

@@ -2,7 +2,6 @@ module RForce
   module Wrapper
     module ApiMethods
       module CoreMethods
-
         def convertLead(*leadConverts)
         end
 
@@ -69,7 +68,6 @@ module RForce
 
         def upsert(externalIdFieldName, *sObjects)
         end
-
       end
     end
   end
