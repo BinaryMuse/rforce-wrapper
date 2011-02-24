@@ -15,7 +15,13 @@ module RForce
         # @return [String] the Salesforce ID of the sObject
         attr_accessor :id
 
-        # Fields that cannot be set via {#[]=}.
+        # Fields that are transformed into calls to attribute methods if they
+        # are set with {#[]=} or retrieved with {#[]}.
+        #
+        # @see #[]
+        # @see #[]=
+        # @see #get_attribute
+        # @see #set_attribute
         INVALID_FIELDS = ['type', 'fieldsToNull', 'id']
 
         # Creates a new sObject with the given parameters and empty fields.
@@ -65,10 +71,13 @@ module RForce
           @fields[key]
         end
 
-        # Sets the given attribute on the object to the given value. Ensures
-        # proper case of the attribute. Used by {#[]=}.
+        # Sets the given attribute on the object to the given value if the key
+        #is included in {INVALID_FIELDS}. Ensures proper case of the
+        # attribute. Used by {#[]=}.
         #
         # @see #[]=
+        # @see INVALID_FIELDS
+        # @return [nil]
         def set_attribute(key, value)
           INVALID_FIELDS.each do |field|
             if field.downcase == key.downcase
@@ -78,10 +87,13 @@ module RForce
           end
         end
 
-        # Returns the value of the given attribute on the object Ensures
-        # proper case of the attribute. Used by {#[]}.
+        # Returns the value of the given attribute on the object if the key is
+        # included in {INVALID_FIELDS}. Ensures proper case of the attribute.
+        # Used by {#[]}.
         #
         # @see #[]
+        # @see INVALID_FIELDS
+        # @return [Object] the value of the attribute
         def get_attribute(key)
           INVALID_FIELDS.each do |field|
             if field.downcase == key.downcase
