@@ -78,6 +78,10 @@ module RForce
           end
         end
 
+        # Returns a hash representation of the SObject for use in RForce SOAP
+        # calls.
+        #
+        # @return [Hash] a hash representation of the sObject
         def to_hash
           hash = @fields
           hash.merge! :type => @type
