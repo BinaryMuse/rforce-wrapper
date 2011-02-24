@@ -2,6 +2,7 @@ require 'rforce'
 require 'rforce-wrapper/utilities'
 require 'rforce-wrapper/version'
 require 'rforce-wrapper/exceptions/salesforce_fault_exception'
+require 'rforce-wrapper/exceptions/invalid_environment_exception'
 require 'rforce-wrapper/methods/core'
 require 'rforce-wrapper/methods/describe'
 require 'rforce-wrapper/methods/utility'
@@ -14,7 +15,7 @@ module RForce
       include RForce::Wrapper::ApiMethods::DescribeMethods
       include RForce::Wrapper::ApiMethods::UtilityMethods
 
-      # Returns the underlying `RForce::Binding` object.
+      # @return [RForce::Binding] the underlying `RForce::Binding` object.
       attr_reader :binding
 
       # Creates a new connect to the Salesforce API using the given email and
@@ -51,6 +52,7 @@ module RForce
       #
       # @param [:live, :test] type the environment type
       # @param [String] version the version of the Salesforce API to use
+      # @return [String] the URL for the given environment and version
       def self.url_for_environment(type, version)
         case type
         when :test
@@ -58,7 +60,7 @@ module RForce
         when :live
           "https://www.salesforce.com/services/Soap/u/#{version}"
         else
-          raise "Invalid environment type: #{type.to_s}"
+          raise RForce::Wrapper::InvalidEnvironmentException.new "Invalid environment type: #{type.to_s}"
         end
       end
 

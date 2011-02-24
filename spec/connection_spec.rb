@@ -48,6 +48,12 @@ describe RForce::Wrapper::Connection do
       end
       @wrapper.wrap_results.should == false
     end
+
+    it "should raise an exception if an invalid environment is passed" do
+      lambda {
+        @wrapper = RForce::Wrapper::Connection.new *@default_constructor_args, {:environment => :fakeish}
+      }.should raise_error RForce::Wrapper::InvalidEnvironmentException
+    end
   end
 
   context "#url_for_environment" do
