@@ -32,6 +32,9 @@ module RForce
       #   use, defaults to `'21.0'`
       # @option options [Boolean] :wrap_results whether or not to wrap
       #   single-element results into an array, defaults to `true`
+      # @raise [RForce::Wrapper::InvalidEnvironmentException] raised via
+      #   `url_for_environment` if an invalid environment is passed
+      # @see .url_for_environment
       def initialize(email, pass, options = {})
         options = {
           :environment  => :live,
@@ -53,6 +56,8 @@ module RForce
       # @param [:live, :test] type the environment type
       # @param [String] version the version of the Salesforce API to use
       # @return [String] the URL for the given environment and version
+      # @raise [RForce::Wrapper::InvalidEnvironmentException] raised if an
+      #   invalid environment type is passed
       def self.url_for_environment(type, version)
         case type
         when :test
