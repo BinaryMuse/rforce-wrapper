@@ -50,7 +50,7 @@ module RForce
         # @param [String] value the value to set to the field
         def []=(key, value)
           key = self.class.make_indifferent_key(key)
-          raise RForce::Wrapper::InvalidFieldException.new if INVALID_FIELDS.map{ |f| f.to_s.downcase }.include? key.downcase
+          raise InvalidFieldException.new if INVALID_FIELDS.map{ |f| f.to_s.downcase }.include? key.downcase
           value = value.to_s unless value.is_a? String
           @fields[key] = value
         end
