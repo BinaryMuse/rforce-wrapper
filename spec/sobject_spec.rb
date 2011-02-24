@@ -85,7 +85,7 @@ describe RForce::Wrapper::Types::SObject do
       @so[:firstName].should == 'Jonathan'
     end
 
-    it "shoudl convert non-string values to a string" do
+    it "should convert non-string values to a string" do
       @so[:field] = :something
       @so[:field].should == :something.to_s
     end

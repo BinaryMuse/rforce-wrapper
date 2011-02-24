@@ -48,6 +48,7 @@ module RForce
         #
         # @param [Symbol, String] key the name of the field
         # @param [String] value the value to set to the field
+        # @return [nil]
         def []=(key, value)
           key = self.class.make_indifferent_key(key)
           raise InvalidFieldException.new if INVALID_FIELDS.map{ |f| f.to_s.downcase }.include? key.downcase
@@ -59,6 +60,7 @@ module RForce
         # to all the same features and restrictions of {#[]=}.
         #
         # @param [Symbol, String] key the name of the field
+        # @return [String] the value of the field
         def [](key)
           key = self.class.make_indifferent_key(key)
           @fields[key]
