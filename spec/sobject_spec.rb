@@ -90,10 +90,44 @@ describe RForce::Wrapper::Types::SObject do
       @so[:field].should == :something.to_s
     end
 
-    it "should raise an exception if type is set" do
-      lambda {
-        @so[:type] = 'something'
-      }.should raise_error RForce::Wrapper::InvalidFieldException
+    it "should call set_attribute for ID" do
+      @so.expects(:set_attribute).with('Id', 'something').once
+      @so[:id] = 'something'
+    end
+
+    it "should call set_attribute for fieldsToNull" do
+      @so.expects(:set_attribute).with('Fieldstonull', 'something').once
+      @so[:fieldstonull] = 'something'
+    end
+  end
+
+  context "#set_attribute" do
+    before :each do
+      @so = SObject.new('Account')
+    end
+
+    it "should set the given attribute" do
+      @so.set_attribute('Id', 'value')
+      @so.id.should == 'value'
+    end
+
+    it "should set the given attribute regardless of case" do
+      @so.set_attribute('Fieldstonull', 'value')
+      @so.fieldsToNull.should == 'value'
+    end
+  end
+
+  context "#get_attribute" do
+    before :each do
+      @so = SObject.new('Account', 'FirstName, LastName', 'myId')
+    end
+
+    it "should return the value of the given attribute" do
+      @so.get_attribute('Id').should == 'myId'
+    end
+
+    it "should return the value of the given attribute regardless of case" do
+      @so.get_attribute('FieldstoNull').should == 'FirstName, LastName'
     end
   end
 

@@ -1,5 +1,3 @@
-require 'rforce-wrapper/exceptions/invalid_field_exception'
-
 module RForce
   module Wrapper
     module Types
@@ -39,20 +37,20 @@ module RForce
           @fieldsToNull = @fieldsToNull.join(", ") if @fieldsToNull.is_a? Array
         end
 
-        # Sets the value of a field on the sObject. Cannot be used with
-        # `type`, `id`, or `fieldsToNull` (access those directly as methods
-        # on the sObject). The method is written such that the following
-        # four keys are equal to each other: `'FirstName'`, `'firstName'`,
-        # `:FirstName`, `:firstName`. The case of every character after the
-        # first, however, must match.
+        # Sets the value of a field on the sObject. Setting `type`, `id`, or
+        # `fieldsToNull` with this method calls the appropriate attribute
+        # accessor on the sObject. The method is written such that the
+        # following four keys are equal to each other: `'FirstName'`,
+        # `'firstName'`, `:FirstName`, `:firstName`. The case of every
+        # character after the first, however, must match.
         #
         # @param [Symbol, String] key the name of the field
         # @param [String] value the value to set to the field
         # @return [nil]
         def []=(key, value)
           key = self.class.make_indifferent_key(key)
-          raise InvalidFieldException.new if INVALID_FIELDS.map{ |f| f.to_s.downcase }.include? key.downcase
           value = value.to_s unless value.is_a? String
+          return set_attribute(key, value) if INVALID_FIELDS.map{ |f| f.to_s.downcase }.include? key.downcase
           @fields[key] = value
         end
 
@@ -63,7 +61,34 @@ module RForce
         # @return [String] the value of the field
         def [](key)
           key = self.class.make_indifferent_key(key)
+          return get_attribute(key) if INVALID_FIELDS.map{ |f| f.to_s.downcase }.include? key.downcase
           @fields[key]
+        end
+
+        # Sets the given attribute on the object to the given value. Ensures
+        # proper case of the attribute. Used by {#[]=}.
+        #
+        # @see #[]=
+        def set_attribute(key, value)
+          INVALID_FIELDS.each do |field|
+            if field.downcase == key.downcase
+              method = "#{field}=".to_sym
+              return self.send(method, value)
+            end
+          end
+        end
+
+        # Returns the value of the given attribute on the object Ensures
+        # proper case of the attribute. Used by {#[]}.
+        #
+        # @see #[]
+        def get_attribute(key)
+          INVALID_FIELDS.each do |field|
+            if field.downcase == key.downcase
+              method = "#{field}".to_sym
+              return self.send(method)
+            end
+          end
         end
 
         # Modifies the given string or symbol into a string with the first
