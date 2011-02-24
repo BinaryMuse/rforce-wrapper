@@ -19,14 +19,18 @@ module RForce
 
       # Creates a new connect to the Salesforce API using the given email and
       # password or password+token combination and connects to the API.
-      # Additional options can be specified.
+      # Additional options can be specified. If a version of the Salesforce
+      # API that is not supported by the gem is passed, a warning is issued.
       #
       # @param [String] email the email address of the account to log in with
       # @param [String] pass the password or password+token combo for the account
       # @param [Hash] options additional options for the connection
-      # @option options [:live, :test] :environment the environment, defaults to `:live`
-      # @option options [String] :version the version of the Salesforce API to use, defaults to `'21.0'`
-      # @option options [Boolean] :wrap_results whether or not to wrap single-element results into an array, defaults to `true`
+      # @option options [:live, :test] :environment the environment,
+      #   defaults to `:live`
+      # @option options [String] :version the version of the Salesforce API to
+      #   use, defaults to `'21.0'`
+      # @option options [Boolean] :wrap_results whether or not to wrap
+      #   single-element results into an array, defaults to `true`
       def initialize(email, pass, options = {})
         options = {
           :environment  => :live,

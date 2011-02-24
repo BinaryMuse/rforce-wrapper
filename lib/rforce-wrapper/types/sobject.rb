@@ -9,8 +9,10 @@ module RForce
         # @return [String] the type of the sObject (e.g. `Account` or `Lead`)
         attr_accessor :type
 
-        # @param [String, Array] fieldsToNull list of field names to null out when the sObject is updated
-        # @return [String] a list of field names to null out when the sObject is updated
+        # @param [String, Array] fieldsToNull list of field names to null out
+        #   when the sObject is updated
+        # @return [String] a list of field names to null out when the sObject
+        #   is updated
         attr_reader :fieldsToNull
 
         # @return [String] the Salesforce ID of the sObject
