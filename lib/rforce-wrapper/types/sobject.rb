@@ -121,7 +121,7 @@ module RForce
         #
         # @return [Hash] a hash representation of the sObject
         def to_hash
-          hash = @fields
+          hash = @fields.clone
           hash.merge! :type => @type
           hash.merge! :Id => @id unless @id.nil?
           hash.merge! :fieldsToNull => @fieldsToNull unless @fieldsToNull.nil? || @fieldsToNull.empty?
